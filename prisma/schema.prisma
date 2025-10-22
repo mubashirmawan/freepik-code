@@ -1,0 +1,43 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  wId          String        @unique
+  name         String
+  updatedAt    DateTime      @updatedAt
+  createdAt    DateTime      @default(now())
+  subscription Subscription?
+  Request      Request[]
+}
+
+model Subscription {
+  id        Int      @id @default(autoincrement())
+  plan      plans
+  expiresAt DateTime
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id])
+
+  reminderDay7Send Boolean @default(false)
+  reminderDay4Send Boolean @default(false)
+  reminderDay1Send Boolean @default(false)
+}
+
+enum plans {
+  BASIC
+  STANDARD
+  PREMIUM
+}
+
+model Request {
+  id     Int      @id @default(autoincrement())
+  date   DateTime @default(now())
+  userId Int
+  user   User     @relation(fields: [userId], references: [id])
+}

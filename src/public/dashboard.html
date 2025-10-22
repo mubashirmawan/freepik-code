@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Home</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: #f8fafc;
+        color: #0f172a;
+      }
+
+      .navbar {
+        background: white;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 28px 48px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      }
+
+      .navbar h1 {
+        font-size: 32px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .navbar .user-menu {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        font-size: 20px;
+        color: #64748b;
+      }
+
+      .navbar .user-menu button {
+        padding: 14px 28px;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        background: white;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+
+      .navbar .user-menu button:hover {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+      }
+
+      .container {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 48px;
+      }
+
+      .header {
+        margin-bottom: 48px;
+      }
+
+      .header h2 {
+        font-size: 52px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 12px;
+      }
+
+      .header p {
+        font-size: 22px;
+        color: #64748b;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+        gap: 32px;
+        margin-bottom: 48px;
+      }
+
+      .stat-card {
+        background: white;
+        border-radius: 16px;
+        padding: 36px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+        transition: all 0.2s ease;
+      }
+
+      .stat-card:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        transform: translateY(-4px);
+      }
+
+      .icon-container {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        margin-bottom: 8px;
+      }
+
+      .stat-card .icon {
+        width: 72px;
+        height: 72px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .stat-card .icon svg {
+        width: 36px;
+        height: 36px;
+      }
+
+      .stat-card .icon.blue {
+        background: #eff6ff;
+        color: #3b82f6;
+      }
+
+      .stat-card .icon.green {
+        background: #f0fdf4;
+        color: #22c55e;
+      }
+
+      .stat-card .icon.purple {
+        background: #faf5ff;
+        color: #a855f7;
+      }
+
+      .stat-card .icon.orange {
+        background: #fff7ed;
+        color: #f97316;
+      }
+
+      .stat-card h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #64748b;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .stat-card .value {
+        font-size: 48px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 8px;
+      }
+
+      .stat-card .change {
+        font-size: 18px;
+        color: #22c55e;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .stat-card .change.negative {
+        color: #ef4444;
+      }
+
+      .plans-section {
+        margin-bottom: 48px;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 32px;
+      }
+
+      .section-header h3 {
+        font-size: 32px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .plans-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+        gap: 32px;
+      }
+
+      .plan-card {
+        background: white;
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        border: 2px solid #e2e8f0;
+        transition: all 0.2s ease;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .plan-card:hover {
+        border-color: #3b82f6;
+        box-shadow: 0 6px 16px rgba(59, 130, 246, 0.15);
+      }
+
+      .plan-card.popular {
+        border-color: #3b82f6;
+        box-shadow: 0 6px 16px rgba(59, 130, 246, 0.15);
+      }
+
+      .plan-card .badge {
+        position: absolute;
+        top: -16px;
+        right: 24px;
+        background: #3b82f6;
+        color: white;
+        padding: 8px 20px;
+        border-radius: 24px;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .plan-card h4 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 12px;
+      }
+
+      .plan-card .price {
+        font-size: 48px;
+        font-weight: 700;
+        color: #3b82f6;
+        margin-bottom: 8px;
+      }
+
+      .plan-card .price span {
+        font-size: 24px;
+        color: #64748b;
+        font-weight: 400;
+      }
+
+      .plan-card .limit {
+        font-size: 20px;
+        color: #64748b;
+        margin-bottom: 24px;
+      }
+
+      .plan-stats {
+        display: flex;
+        gap: 24px;
+        padding-top: 24px;
+        border-top: 1px solid #e2e8f0;
+      }
+
+      .plan-stat {
+        flex: 1;
+      }
+
+      .plan-stat .label {
+        font-size: 16px;
+        color: #64748b;
+        margin-bottom: 8px;
+      }
+
+      .plan-stat .stat-value {
+        font-size: 28px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .actions-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 32px;
+      }
+
+      .action-card {
+        background: white;
+        border-radius: 16px;
+        padding: 36px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .action-card:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        transform: translateY(-4px);
+        border-color: #3b82f6;
+      }
+
+      .action-card .action-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 16px;
+        background: #eff6ff;
+        color: #3b82f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .action-card .action-icon svg {
+        width: 40px;
+        height: 40px;
+      }
+
+      .action-card h4 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .action-card p {
+        font-size: 18px;
+        color: #64748b;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 24px;
+        }
+
+        .navbar {
+          padding: 20px 24px;
+        }
+
+        .navbar h1 {
+          font-size: 24px;
+        }
+
+        .navbar .user-menu {
+          font-size: 16px;
+        }
+
+        .navbar .user-menu button {
+          padding: 10px 20px;
+          font-size: 14px;
+        }
+
+        .header h2 {
+          font-size: 36px;
+        }
+
+        .header p {
+          font-size: 18px;
+        }
+
+        .stats-grid,
+        .plans-grid,
+        .actions-section {
+          grid-template-columns: 1fr;
+        }
+
+        .stat-card .value {
+          font-size: 36px;
+        }
+
+        .plan-card .price {
+          font-size: 36px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <h1>📊 Dashboard</h1>
+      <div class="user-menu">
+        <span>Admin</span>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="header">
+        <h2>Stats</h2>
+        <p>Monitor your subscription service performance</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="icon-container">
+            <div class="icon blue">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <h3>Total Users</h3>
+          </div>
+          <div class="value" id="totalUsers">0</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="icon-container">
+            <div class="icon green">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path
+                  d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                ></path>
+              </svg>
+            </div>
+            <h3>Total Revenue</h3>
+          </div>
+          <div class="value" id="totalRevenue">PKR 0</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="icon-container">
+            <div class="icon purple">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+              </svg>
+            </div>
+            <h3>Active Subscriptions</h3>
+          </div>
+          <div class="value" id="activeSubscriptions">0</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="icon-container">
+            <div class="icon orange">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <polyline points="19 12 12 19 5 12"></polyline>
+              </svg>
+            </div>
+            <h3>Avg. Revenue Per User</h3>
+          </div>
+          <div class="value" id="avgRevenue">PKR 0</div>
+        </div>
+      </div>
+
+      <div class="plans-section">
+        <div class="section-header">
+          <h3>Subscription Plans</h3>
+        </div>
+        <div class="plans-grid">
+          <div class="plan-card">
+            <h4>Basic</h4>
+            <div class="price">299 <span>PKR</span></div>
+            <div class="limit">10 files per day</div>
+            <div class="plan-stats">
+              <div class="plan-stat">
+                <div class="label">Subscribers</div>
+                <div class="stat-value" id="basicUsers">0</div>
+              </div>
+              <div class="plan-stat">
+                <div class="label">Revenue</div>
+                <div class="stat-value" id="basicRevenue">0</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="plan-card popular">
+            <div class="badge">Most Popular</div>
+            <h4>Standard</h4>
+            <div class="price">349 <span>PKR</span></div>
+            <div class="limit">20 files per day</div>
+            <div class="plan-stats">
+              <div class="plan-stat">
+                <div class="label">Subscribers</div>
+                <div class="stat-value" id="standardUsers">0</div>
+              </div>
+              <div class="plan-stat">
+                <div class="label">Revenue</div>
+                <div class="stat-value" id="standardRevenue">0</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="plan-card">
+            <h4>Premium</h4>
+            <div class="price">379 <span>PKR</span></div>
+            <div class="limit">30 files per day</div>
+            <div class="plan-stats">
+              <div class="plan-stat">
+                <div class="label">Subscribers</div>
+                <div class="stat-value" id="premiumUsers">0</div>
+              </div>
+              <div class="plan-stat">
+                <div class="label">Revenue</div>
+                <div class="stat-value" id="premiumRevenue">0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="plans-section">
+        <div class="section-header">
+          <h3>Quick Actions</h3>
+        </div>
+        <div class="actions-section">
+          <a href="users.html" class="action-card">
+            <div class="action-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <h4>View All Users</h4>
+            <p>
+              Browse and manage all registered users and their subscriptions
+            </p>
+          </a>
+
+          <a href="add-user.html" class="action-card">
+            <div class="action-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="8.5" cy="7" r="4"></circle>
+                <line x1="20" y1="8" x2="20" y2="14"></line>
+                <line x1="23" y1="11" x2="17" y2="11"></line>
+              </svg>
+            </div>
+            <h4>Add New User</h4>
+            <p>Register a new user and assign them a subscription plan</p>
+          </a>
+
+          <a href="analytics.html" class="action-card">
+            <div class="action-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="20" x2="12" y2="10"></line>
+                <line x1="18" y1="20" x2="18" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="16"></line>
+              </svg>
+            </div>
+            <h4>View Analytics</h4>
+            <p>Check out weekly, monthly and annually analytics</p>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const PLAN_PRICES = {
+        BASIC: 299,
+        STANDARD: 349,
+        PREMIUM: 379,
+      };
+
+      async function loadDashboardData() {
+        try {
+          const res = await fetch("/users");
+          const users = await res.json();
+
+          const totalUsers = users.length;
+          const activeSubscriptions = users.filter(
+            (u) =>
+              u.subscription?.expiresAt &&
+              new Date(u.subscription.expiresAt) > new Date()
+          ).length;
+
+          const planCounts = {
+            BASIC: 0,
+            STANDARD: 0,
+            PREMIUM: 0,
+          };
+
+          users.forEach((u) => {
+            const plan = u.subscription?.plan?.toUpperCase();
+            if (planCounts.hasOwnProperty(plan)) {
+              planCounts[plan]++;
+            }
+          });
+
+          const basicRevenue = planCounts.BASIC * PLAN_PRICES.BASIC;
+          const standardRevenue = planCounts.STANDARD * PLAN_PRICES.STANDARD;
+          const premiumRevenue = planCounts.PREMIUM * PLAN_PRICES.PREMIUM;
+          const totalRevenue = basicRevenue + standardRevenue + premiumRevenue;
+
+          const avgRevenue =
+            totalUsers > 0 ? Math.round(totalRevenue / totalUsers) : 0;
+
+          document.getElementById("totalUsers").textContent = totalUsers;
+          document.getElementById(
+            "totalRevenue"
+          ).textContent = `PKR ${totalRevenue.toLocaleString()}`;
+          document.getElementById("activeSubscriptions").textContent =
+            activeSubscriptions;
+          document.getElementById(
+            "avgRevenue"
+          ).textContent = `PKR ${avgRevenue}`;
+
+          document.getElementById("basicUsers").textContent = planCounts.BASIC;
+          document.getElementById("basicRevenue").textContent =
+            basicRevenue.toLocaleString();
+          document.getElementById("standardUsers").textContent =
+            planCounts.STANDARD;
+          document.getElementById("standardRevenue").textContent =
+            standardRevenue.toLocaleString();
+          document.getElementById("premiumUsers").textContent =
+            planCounts.PREMIUM;
+          document.getElementById("premiumRevenue").textContent =
+            premiumRevenue.toLocaleString();
+        } catch (err) {
+          console.error("Failed to load dashboard data:", err);
+        }
+      }
+
+      function logout() {
+        if (confirm("Are you sure you want to logout?")) {
+          window.location.href = "/";
+        }
+      }
+
+      function showReports() {
+        alert("Reports feature coming soon!");
+      }
+
+      loadDashboardData();
+      setInterval(loadDashboardData, 30000);
+    </script>
+  </body>
+</html>
